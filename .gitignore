@@ -1,0 +1,5 @@
+*.sqlite3
+venv/
+liara.json
+media/
+__pycache__
