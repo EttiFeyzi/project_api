@@ -164,7 +164,7 @@ AUTH_USER_MODEL = 'adminpanel.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_ATHENTICATION_CLASSES' :(
+    'DEFAULT_AUTHENTICATION_CLASSES' :(
        
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
