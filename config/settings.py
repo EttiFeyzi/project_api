@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# since it's running on my machine, show me the errors
+DEBUG = True
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^_$aob@f18v-z5vuxe2h+yzj=qw$l5de&iw=ubc3-q4(ayn$@b'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,6 +55,8 @@ INSTALLED_APPS = [
     'adminpanel',
     'products',
     'extensions',
+    'services',
+    'items',
     #pkg
     'django_filters',
     'phone_field',
@@ -84,16 +95,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'mohamad',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'PORT': '3306',
-#         'HOST': 'localhost',
-#     }
-# }
 
 
 # Database
@@ -110,6 +111,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        
     }
 }
 
@@ -151,6 +153,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -163,19 +166,26 @@ MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
 AUTH_USER_MODEL = 'adminpanel.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' :(
        
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS':
-     ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_FILTER_BACKENDS':[
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+        ],
 
-    'DEFAULT_PERMISSION_CLASSES':(
-        'rest_framework.permissions.AllowAny',
+    # 'DEFAULT_PERMISSION_CLASSES':(
+    #     'rest_framework.permissions.IsAuthenticatedOrReadOnly',
 
-    )
+    # )
 }
+
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(weeks=30),
